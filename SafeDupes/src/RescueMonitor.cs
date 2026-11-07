@@ -18,6 +18,18 @@ namespace SafeDupes
         }
 
         private readonly Dictionary<MinionIdentity, State> states = new Dictionary<MinionIdentity, State>();
+
+        /// <summary>Dupes the monitor currently considers trapped (confirmed). Read by the death report.</summary>
+        internal static readonly HashSet<MinionIdentity> Flagged = new HashSet<MinionIdentity>();
+
+        /// <summary>Same test the monitor uses: small pocket AND cut off from the colony.</summary>
+        internal static bool LooksTrapped(MinionIdentity id, Navigator nav, out int nodes)
+        {
+            nodes = 0;
+            int here = Grid.PosToCell(nav);
+            if (!Grid.IsValidCell(here)) return false;
+            return !TrapSim.CanEscapeFromHere(nav, out nodes) && !CanReachColony(id, nav, here);
+        }
         private float nextCheckAt;
         private int cursor;
 
@@ -62,9 +74,11 @@ namespace SafeDupes
             {
                 st.trappedChecks = 0;
                 st.notifiedNoFix = false;
+                Flagged.Remove(id);
                 return;
             }
             if (++st.trappedChecks < cfg.RescueConfirmChecks) return;
+            Flagged.Add(id);
             if (now - st.lastRescueAt < cfg.RescueCooldownSeconds) return;
 
             bool fixedIt = TryOrderEscape(nav, cfg, out string what);

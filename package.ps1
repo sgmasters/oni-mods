@@ -4,6 +4,7 @@
 param([string]$GameDir = "")
 
 $ErrorActionPreference = "Stop"
+Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
 $root = $PSScriptRoot
 $dist = Join-Path $root "dist"
 New-Item -ItemType Directory -Force $dist | Out-Null
@@ -20,6 +21,13 @@ foreach ($mod in @("DupeBrainBoost", "SafeDupes", "DupeTraffic")) {
     $zip = Join-Path $dist "$mod-$version.zip"
     if (Test-Path $zip) { Remove-Item -Force $zip }
     # The zip contains the mod folder itself, so players extract it straight into mods\local.
-    Compress-Archive -Path $stage -DestinationPath $zip
+    # Built by hand (not Compress-Archive) so entry paths use "/" and extract correctly on Mac/Linux too.
+    $archive = [System.IO.Compression.ZipFile]::Open($zip, [System.IO.Compression.ZipArchiveMode]::Create)
+    try {
+        Get-ChildItem -Path $stage -File -Recurse | ForEach-Object {
+            $rel = $mod + "/" + $_.FullName.Substring($stage.Length + 1).Replace("\", "/")
+            [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, $_.FullName, $rel) | Out-Null
+        }
+    } finally { $archive.Dispose() }
     Write-Host "Packaged $zip"
 }

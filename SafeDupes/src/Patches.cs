@@ -90,10 +90,11 @@ namespace SafeDupes
             nextLogAt = now + 60f;
             Debug.LogFormat("[SafeDupes] last minute: trap spots avoided={0}, errand checks refused as traps={1}, " +
                             "walks cancelled (only trap spots left)={2}, health refusals={3}, rescues ordered={4}, " +
-                            "trapped without fix={5} | trap simulations={6} ({7:0.00}ms avg) | errand checks={8}, total cost {9:0.0}ms/min",
+                            "trapped without fix={5}, deaths={10} | trap simulations={6} ({7:0.00}ms avg) | errand checks={8}, total cost {9:0.0}ms/min",
                 SpotsAvoided, ErrandsSkippedTrap, CommitsBlocked, HealthRefusals, Rescues, TrappedNoFix,
                 Simulations, Simulations > 0 ? SimulationMs / Simulations : 0.0,
-                CheckCalls, CheckTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency);
+                CheckCalls, CheckTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency, DeathReport.Deaths);
+            DeathReport.Deaths = 0;
             ErrandsSkippedTrap = HealthRefusals = SpotsAvoided = CommitsBlocked = Simulations = Rescues = TrappedNoFix = 0;
             SimulationMs = 0;
             CheckTicks = 0;
@@ -185,6 +186,7 @@ namespace SafeDupes
         {
             TrapSim.Reset();
             HealthGate.Reset();
+            RescueMonitor.Flagged.Clear();
             __instance.gameObject.AddOrGet<RescueMonitor>();
         }
     }

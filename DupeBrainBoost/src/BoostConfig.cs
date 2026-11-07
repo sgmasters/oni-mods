@@ -186,6 +186,11 @@ namespace DupeBrainBoost
         [Limit(16, 500)]
         [JsonProperty] public float FastTrackFrameTimeLimitMs { get; set; } = 45f;
 
+        // ---- Game fixes ----
+
+        [Option("Fix lost keyboard/mouse input", "If the game stops reading keyboard and mouse while its window is focused (missed focus event after Alt-Tab or an overlay), turn input back on.", "6. Game fixes")]
+        [JsonProperty] public bool FixLostInputFocus { get; set; } = true;
+
         // ---- Diagnostics ----
 
         /// <summary>Write a stats line to Player.log every N real seconds (0 = off).</summary>
