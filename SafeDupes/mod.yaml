@@ -1,0 +1,3 @@
+title: "Safe Dupes"
+description: "Duplicants stop trapping themselves. (1) Before building a tile or deconstructing a tile/ladder, the game's own path-finder simulates the result; dupes won't build from the side that gets sealed in, and won't remove the floor or ladder they need to get out. (2) A dupe that is already trapped gets an automatic top-priority dig/deconstruct order to open the cheapest way out, plus a notification. (3) Hurt dupes refuse errands in scalding, freezing, radioactive or (when badly hurt) airless spots and do something safe instead. Settings: Options button in the Mods menu."
+staticID: SafeDupes

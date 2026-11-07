@@ -1,0 +1,6 @@
+<Project>
+  <!-- Shared by all mods: merge PLib (options dialog in the Mods menu) into each mod DLL. -->
+  <PropertyGroup>
+    <ILRepackTargetsFile>$(MSBuildThisFileDirectory)ILRepack.targets</ILRepackTargetsFile>
+  </PropertyGroup>
+</Project>

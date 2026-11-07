@@ -1,0 +1,3 @@
+title: "Dupe Traffic Heatmap"
+description: "Adds an overlay showing where duplicants walk and climb most often, so you can see where plastic ladders, fire poles, better floor tiles or transit tubes would save the most time. Purple = busy ladders/poles (upgrade candidates), blue-to-red = walking traffic."
+staticID: DupeTraffic

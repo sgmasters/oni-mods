@@ -1,0 +1,12 @@
+<Project>
+  <!-- Merges PLib.dll into the mod DLL so only one file has to be installed. -->
+  <Target Name="MergePLib" AfterTargets="Build" Condition="Exists('$(OutputPath)PLib.dll')">
+    <ItemGroup>
+      <RepackInput Include="$(OutputPath)$(TargetName)$(TargetExt)" />
+      <RepackInput Include="$(OutputPath)PLib.dll" />
+    </ItemGroup>
+    <ILRepack Parallel="true" DebugInfo="false" InputAssemblies="@(RepackInput)"
+              LibraryPath="$(GameManaged)" TargetKind="SameAsPrimaryAssembly"
+              OutputFile="$(OutputPath)$(TargetName)$(TargetExt)" />
+  </Target>
+</Project>

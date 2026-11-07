@@ -1,0 +1,3 @@
+title: "Dupe Brain Boost"
+description: "Big-colony errand performance. The base game lets only ONE duplicant choose an errand per frame, so with 100-200 dupes (or at high speed with Customizable Speed) dupes stand still for many in-game seconds and can scald or suffocate. This mod scales the number of decisions per frame with colony size and game speed (within a CPU time budget), lets dupes in danger and idle dupes decide first, and runs path-finding on more background threads. Settings: Options button in the Mods menu."
+staticID: DupeBrainBoost

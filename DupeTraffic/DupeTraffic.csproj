@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Dupe Traffic Heatmap - Oxygen Not Included mod.
+    Build:  dotnet build -c Release
+    The built DLL + yaml files are copied to the local mods folder automatically.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>DupeTraffic</AssemblyName>
+    <RootNamespace>DupeTraffic</RootNamespace>
+    <Version>1.0.0</Version>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Nullable>disable</Nullable>
+    <GameDir Condition="'$(GameDir)' == ''">C:\Program Files\Epic Games\OxygenNotIncluded</GameDir>
+    <GameManaged>$(GameDir)\OxygenNotIncluded_Data\Managed</GameManaged>
+    <ModInstallDir Condition="'$(ModInstallDir)' == ''">$(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\local\DupeTraffic</ModInstallDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp"><HintPath>$(GameManaged)\Assembly-CSharp.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Assembly-CSharp-firstpass"><HintPath>$(GameManaged)\Assembly-CSharp-firstpass.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>$(GameManaged)\0Harmony.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(GameManaged)\UnityEngine.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Newtonsoft.Json"><HintPath>$(GameManaged)\Newtonsoft.Json.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(GameManaged)\UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="mod.yaml;mod_info.yaml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.48">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="PLib" Version="4.25.0" />
+  </ItemGroup>
+
+  <Target Name="InstallMod" AfterTargets="MergePLib">
+    <ItemGroup>
+      <ModFiles Include="$(OutputPath)DupeTraffic.dll;$(OutputPath)mod.yaml;$(OutputPath)mod_info.yaml" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ModFiles)" DestinationFolder="$(ModInstallDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="DupeTraffic installed to $(ModInstallDir)" />
+  </Target>
+</Project>
